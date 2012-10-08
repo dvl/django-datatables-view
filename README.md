@@ -14,6 +14,16 @@ Usage
 
 2. views.py:
 
+  django_datatables_view uses GenericViews, so your view should just inherit from base class: BaseDatatableView, and override few things.
+  These are:
+
+    * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
+    * get_initial_queryset - method that should return queryset used to populate datatable
+    * filter_queryset - if you want to filter your datatable then override this method
+    * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
+
+  See example below:
+
     :::python
 
         from django_datatables_view.base_datatable_view import BaseDatatableView
