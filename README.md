@@ -17,10 +17,10 @@ Usage
   django_datatables_view uses GenericViews, so your view should just inherit from base class: BaseDatatableView, and override few things.
   These are:
 
-    * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
-    * get_initial_queryset - method that should return queryset used to populate datatable
-    * filter_queryset - if you want to filter your datatable then override this method
-    * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
+  * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
+  * get_initial_queryset - method that should return queryset used to populate datatable
+  * filter_queryset - if you want to filter your datatable then override this method
+  * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
 
   See example below:
 
@@ -76,21 +76,22 @@ Usage
 
 3. urls.py
 
-    ::: python
+  ::: python
 
-        # ...
-        url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
-        # ....
+      # ...
+      url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
+      # ....
 
 4. Define HTML + JavaScript part as usual, eg:
-    ::: javascript
 
-        $(document).ready(function() {
-            var oTable = $('.datatable').dataTable({
-                // ...
-                "bProcessing": true,
-                "bServerSide": true,
-                "sAjaxSource": "{% url order_list_json %}"
-            });
-            // ...
-        });
+  ::: javascript
+
+      $(document).ready(function() {
+          var oTable = $('.datatable').dataTable({
+              // ...
+              "bProcessing": true,
+              "bServerSide": true,
+              "sAjaxSource": "{% url order_list_json %}"
+          });
+          // ...
+      });
