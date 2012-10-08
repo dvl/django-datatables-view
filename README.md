@@ -76,15 +76,19 @@ Usage
 
 3. urls.py
 
-  ::: python
+  Add typical django's clause:
 
-      # ...
-      url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
-      # ....
+    ::: python
+
+        # ...
+        url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
+        # ....
 
 4. Define HTML + JavaScript part as usual, eg:
 
-  ::: javascript
+  Example JS:
+
+    ::: javascript
 
       $(document).ready(function() {
           var oTable = $('.datatable').dataTable({
