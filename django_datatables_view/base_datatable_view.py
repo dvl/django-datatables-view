@@ -26,7 +26,7 @@ class BaseDatatableView(JSONResponseView):
             i_sorting_cols = 0
 
         order = []
-
+        order_columns = self.get_order_columns()
         for i in range(i_sorting_cols):
             # sorting column
             try:
@@ -38,7 +38,7 @@ class BaseDatatableView(JSONResponseView):
 
             sdir = '-' if s_sort_dir == 'desc' else ''
 
-            sortcol = self.get_order_columns()[i_sort_col]
+            sortcol = order_columns[i_sort_col]
             if isinstance(sortcol, list):
                 for sc in sortcol:
                     order.append('%s%s' % (sdir, sc))
