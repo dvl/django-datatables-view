@@ -1,0 +1,4 @@
+2012.10.17 - 1.1
+
+- use request.REQUEST instead of request.POST
+- remove unnecessary code
