@@ -51,8 +51,8 @@ class BaseDatatableView(JSONResponseView):
     def paging(self, qs):
         """ Paging
         """
-        limit = min(int(self.request.POST.get('iDisplayLength', 10)), 100)
-        start = int(self.request.POST.get('iDisplayStart', 0))
+        limit = min(int(self.request.REQUEST.get('iDisplayLength', 10)), 100)
+        start = int(self.request.REQUEST.get('iDisplayStart', 0))
         offset = start + limit
         return qs[start:offset]
 
