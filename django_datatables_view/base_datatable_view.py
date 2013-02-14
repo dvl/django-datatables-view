@@ -52,6 +52,9 @@ class BaseDatatableView(JSONResponseView):
         """ Paging
         """
         limit = min(int(self.request.REQUEST.get('iDisplayLength', 10)), 100)
+        # if pagination is disabled ("bPaginate": false)
+        if limit == -1:
+            return qs
         start = int(self.request.REQUEST.get('iDisplayStart', 0))
         offset = start + limit
         return qs[start:offset]
