@@ -35,6 +35,10 @@ Usage
             # value like ''
             order_columns = ['number', 'user', 'state']
 
+            # set max limit of records returned, this is used to protect our site if someone tries to attack our site
+            # and make it return huge amount of data
+            max_display_length = 500
+
             def get_initial_queryset(self):
                 # return queryset used as base for futher sorting/filtering
                 # these are simply objects displayed in datatable

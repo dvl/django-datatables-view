@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+
 from .mixins import JSONResponseView
 
 
@@ -6,6 +8,7 @@ class BaseDatatableView(JSONResponseView):
     """ JSON data for datatables
     """
     order_columns = []
+    max_display_length = 200  # max limit of records returned, do not allow to kill our server by huge sets of data
 
     def initialize(*args, **kwargs):
         pass
@@ -51,7 +54,7 @@ class BaseDatatableView(JSONResponseView):
     def paging(self, qs):
         """ Paging
         """
-        limit = min(int(self.request.REQUEST.get('iDisplayLength', 10)), 100)
+        limit = min(int(self.request.REQUEST.get('iDisplayLength', 10)), self.max_display_length)
         # if pagination is disabled ("bPaginate": false)
         if limit == -1:
             return qs

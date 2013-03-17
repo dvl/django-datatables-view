@@ -1,6 +1,12 @@
+2013.03.17 - 1.4
+
+- add max_display_length parameter to allow easy customisation of max records limit (thanks Eric Gallimore)
+
+
 2013.02.14 - 1.3
 
 - added support for datatables with disabled pagination
+
 
 2012.10.17 - 1.2
 
