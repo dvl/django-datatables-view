@@ -17,10 +17,10 @@ Usage
   django_datatables_view uses GenericViews, so your view should just inherit from base class: BaseDatatableView, and override few things.
   These are:
 
+  * model - the model that should be used to populate the datatable
+  * columns - the columns that are going to be displayed
   * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
-  * get_initial_queryset - method that should return queryset used to populate datatable
   * filter_queryset - if you want to filter your datatable then override this method
-  * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
 
   See example below:
 
@@ -29,6 +29,12 @@ Usage
         from django_datatables_view.base_datatable_view import BaseDatatableView
 
         class OrderListJson(BaseDatatableView):
+            # The model we're going to show
+            model = MyModel
+
+            # define the columns that will be returned
+            columns = ['number', 'user', 'state', 'created', 'modified']
+
             # define column names that will be used in sorting
             # order is important and should be same as order of columns
             # displayed by datatables. For non sortable columns use empty
@@ -39,10 +45,12 @@ Usage
             # and make it return huge amount of data
             max_display_length = 500
 
-            def get_initial_queryset(self):
-                # return queryset used as base for futher sorting/filtering
-                # these are simply objects displayed in datatable
-                return MyModel.objects.all()
+            def render_column(self, row, column):
+                # We want to render user as a custom column
+                if column == 'user':
+                    return '%s %s' % (row.customer_firstname, row.customer_lastname)
+                else:
+                    return super(OrderListJson, self).render_column(row, column)
 
             def filter_queryset(self, qs):
                 # use request parameters to filter queryset
@@ -63,20 +71,6 @@ Usage
                         qs_params = qs_params | q if qs_params else q
                     qs = qs.filter(qs_params)
                 return qs
-
-            def prepare_results(self, qs):
-                # prepare list with output column data
-                # queryset is already paginated here
-                json_data = []
-                for item in qs:
-                    json_data.append([
-                        item.number,
-                        "%s %s" % (item.customer_firstname, item.customer_lastname),
-                        item.get_state_display(),
-                        item.created,
-                        item.modified,
-                    ])
-                return json_data
 
 3. urls.py
 

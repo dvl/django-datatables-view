@@ -5,6 +5,8 @@ from .mixins import JSONResponseView
 class BaseDatatableView(JSONResponseView):
     """ JSON data for datatables
     """
+    model = None
+    columns = []
     order_columns = []
     max_display_length = 100  # max limit of records returned, do not allow to kill our server by huge sets of data
 
@@ -15,6 +17,25 @@ class BaseDatatableView(JSONResponseView):
         """ Return list of columns used for ordering
         """
         return self.order_columns
+
+    def get_columns(self):
+        """ Returns the list of columns that are returned in the result set
+        """
+        return self.columns
+
+    def render_column(self, row, column):
+        """ Renders a column on a row
+        """
+        if hasattr(row, 'get_%s_display' % column):
+            # It's a choice field
+            text = getattr(row, 'get_%s_display' % column)()
+        else:
+            text = getattr(row, column)
+
+        if hasattr(row, 'get_absolute_url'):
+            return '<a href="%s">%s</a>' % (row.get_absolute_url(), text)
+        else:
+            return text
 
     def ordering(self, qs):
         """ Get parameters from the request and prepare order by clause
@@ -60,16 +81,20 @@ class BaseDatatableView(JSONResponseView):
         offset = start + limit
         return qs[start:offset]
 
-    # TO BE OVERRIDEN
     def get_initial_queryset(self):
-        raise Exception("Method get_initial_queryset not defined!")
+        if not self.model:
+            raise NotImplementedError("Need to provide a model or implement get_initial_queryset!")
+        return self.model.objects.all()
 
     def filter_queryset(self, qs):
         return qs
 
     def prepare_results(self, qs):
-        return []
-    # /TO BE OVERRIDEN
+        data = []
+        for item in qs:
+            data.append([self.render_column(item, column) for column in
+                self.get_columns()])
+        return data
 
     def get_context_data(self, *args, **kwargs):
         request = self.request
