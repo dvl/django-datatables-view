@@ -73,8 +73,8 @@ Usage
                         item.number,
                         "%s %s" % (item.customer_firstname, item.customer_lastname),
                         item.get_state_display(),
-                        item.created.strftime("%Y-%m-%d %H:%M:%S"),
-                        item.modified.strftime("%Y-%m-%d %H:%M:%S")
+                        item.created,
+                        item.modified,
                     ])
                 return json_data
 
