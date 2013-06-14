@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from django.http import HttpResponse
 from django.utils import simplejson
-from django.core.mail import mail_admins
 from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 from django.utils.translation import ugettext as _
@@ -68,12 +67,12 @@ class JSONResponseMixin(object):
                 msg = e.message
                 msg += str(e)
             else:
-                msg = _('Internal error')+': '+str(e)
+                msg = _('Internal error') + ': ' + str(e)
             response = {'result': 'error',
                         'text': msg}
 
         json = simplejson.dumps(response, cls=DTEncoder)
-        return self.render_to_response(json) 
+        return self.render_to_response(json)
 
 
 class JSONResponseView(JSONResponseMixin, TemplateView):
