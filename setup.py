@@ -27,6 +27,6 @@ setup(name='django-datatables-view',
       zip_safe=False,
       dependency_links=[],
       install_requires=[
-        'setuptools',
+          'setuptools',
       ],
      )
