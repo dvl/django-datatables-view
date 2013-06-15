@@ -1,3 +1,7 @@
+2013.06.15 - 1.5
+
+- added some 'batteries included' to django_datatables_view, use DjangoJSONEncoder (thanks Ewoud Kohl van Wijngaarden)
+
 2013.03.17 - 1.4
 
 - add max_display_length parameter to allow easy customisation of max records limit (thanks Eric Gallimore)
