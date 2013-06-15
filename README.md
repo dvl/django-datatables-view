@@ -3,29 +3,30 @@ What is it?
 
 django-datatables-view is a base view for handling server side processing for the awesome datatables (http://datatables.net).
 
-django-datatables-view simplifies handling of sorting, filtering and creating JSON output, as defined at:
-http://datatables.net/usage/server-side
+django-datatables-view simplifies handling of sorting, filtering and creating JSON output, as defined at: http://datatables.net/usage/server-side
 
 
 Usage
 =====
 
-1. pip install django-datatables-view
+### 1. Install django-datatables-view ###
+  
+    pip install django-datatables-view
 
-2. views.py:
+### 2. Edit views.py ###
 
-  django_datatables_view uses GenericViews, so your view should just inherit from base class: BaseDatatableView, and override few things.
+_django_datatables_view_ uses **GenericViews**, so your view should just inherit from base class: **BaseDatatableView**, and override few things.
   These are:
 
-  * model - the model that should be used to populate the datatable
-  * columns - the columns that are going to be displayed
-  * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
-  * filter_queryset - if you want to filter your datatable then override this method
+  * **model** - the model that should be used to populate the datatable
+  * **columns** - the columns that are going to be displayed
+  * **order_columns** - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
+  * **filter_queryset** - if you want to filter your datatable then override this method
 
   For more advanced customisation you might want to override:
 
-  * get_initial_queryset - method that should return queryset used to populate datatable
-  * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
+  * **get_initial_queryset** - method that should return queryset used to populate datatable
+  * **prepare_results** - this method should return list of lists (rows with columns) as needed by datatables
 
   See example below:
 
@@ -77,9 +78,9 @@ Usage
                     qs = qs.filter(qs_params)
                 return qs
 
-3. urls.py
+### 3. Edit urls.py ###
 
-  Add typical django's clause:
+  Add typical django's urlconf entry:
 
     ::: python
 
@@ -87,7 +88,7 @@ Usage
         url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
         # ....
 
-4. Define HTML + JavaScript part as usual, eg:
+### 4. Define HTML + JavaScript ###
 
   Example JS:
 
@@ -104,7 +105,7 @@ Usage
       });
 
 
-Another customisation example:
+## Another example of views.py customisation ##
 
   :::python
 
