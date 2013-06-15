@@ -90,24 +90,20 @@ _django_datatables_view_ uses **GenericViews**, so your view should just inherit
 
 ### 4. Define HTML + JavaScript ###
 
-  Example JS:
+Example JS:
 
-    ::: javascript
-
-      $(document).ready(function() {
-          var oTable = $('.datatable').dataTable({
-              // ...
-              "bProcessing": true,
-              "bServerSide": true,
-              "sAjaxSource": "{% url order_list_json %}"
-          });
-          // ...
-      });
+    $(document).ready(function() {
+        var oTable = $('.datatable').dataTable({
+            // ...
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": "{% url order_list_json %}"
+        });
+        // ...
+    });
 
 
 ## Another example of views.py customisation ##
-
-  :::python
 
         from django_datatables_view.base_datatable_view import BaseDatatableView
 
