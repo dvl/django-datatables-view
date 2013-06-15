@@ -82,8 +82,6 @@ _django_datatables_view_ uses **GenericViews**, so your view should just inherit
 
   Add typical django's urlconf entry:
 
-    ::: python
-
         # ...
         url(r'^my/datatable/data/$', login_required(OrderListJson.as_view()), name='order_list_json'),
         # ....
@@ -105,48 +103,48 @@ Example JS:
 
 ## Another example of views.py customisation ##
 
-        from django_datatables_view.base_datatable_view import BaseDatatableView
+    from django_datatables_view.base_datatable_view import BaseDatatableView
 
-        class OrderListJson(BaseDatatableView):
-            order_columns = ['number', 'user', 'state']
+    class OrderListJson(BaseDatatableView):
+        order_columns = ['number', 'user', 'state']
 
-            def get_initial_queryset(self):
-                # return queryset used as base for futher sorting/filtering
-                # these are simply objects displayed in datatable
-                # You should not filter data returned here by any filter values entered by user. This is because
-                # we need some base queryset to count total number of records.
-                return MyModel.objects.filter(something=self.kwargs['something'])
+        def get_initial_queryset(self):
+            # return queryset used as base for futher sorting/filtering
+            # these are simply objects displayed in datatable
+            # You should not filter data returned here by any filter values entered by user. This is because
+            # we need some base queryset to count total number of records.
+            return MyModel.objects.filter(something=self.kwargs['something'])
 
-            def filter_queryset(self, qs):
-                # use request parameters to filter queryset
+        def filter_queryset(self, qs):
+            # use request parameters to filter queryset
 
-                # simple example:
-                sSearch = self.request.POST.get('sSearch', None)
-                if sSearch:
-                    qs = qs.filter(name__istartswith=sSearch)
+            # simple example:
+            sSearch = self.request.POST.get('sSearch', None)
+            if sSearch:
+                qs = qs.filter(name__istartswith=sSearch)
 
-                # more advanced example
-                filter_customer = self.request.POST.get('customer', None)
+            # more advanced example
+            filter_customer = self.request.POST.get('customer', None)
 
-                if filter_customer:
-                    customer_parts = filter_customer.split(' ')
-                    qs_params = None
-                    for part in customer_parts:
-                        q = Q(customer_firstname__istartswith=part)|Q(customer_lastname__istartswith=part)
-                        qs_params = qs_params | q if qs_params else q
-                    qs = qs.filter(qs_params)
-                return qs
+            if filter_customer:
+                customer_parts = filter_customer.split(' ')
+                qs_params = None
+                for part in customer_parts:
+                    q = Q(customer_firstname__istartswith=part)|Q(customer_lastname__istartswith=part)
+                    qs_params = qs_params | q if qs_params else q
+                qs = qs.filter(qs_params)
+            return qs
 
-            def prepare_results(self, qs):
-                # prepare list with output column data
-                # queryset is already paginated here
-                json_data = []
-                for item in qs:
-                    json_data.append([
-                        item.number,
-                        "%s %s" % (item.customer_firstname, item.customer_lastname),
-                        item.get_state_display(),
-                        item.created.strftime("%Y-%m-%d %H:%M:%S"),
-                        item.modified.strftime("%Y-%m-%d %H:%M:%S")
-                    ])
-                return json_data
+        def prepare_results(self, qs):
+            # prepare list with output column data
+            # queryset is already paginated here
+            json_data = []
+            for item in qs:
+                json_data.append([
+                    item.number,
+                    "%s %s" % (item.customer_firstname, item.customer_lastname),
+                    item.get_state_display(),
+                    item.created.strftime("%Y-%m-%d %H:%M:%S"),
+                    item.modified.strftime("%Y-%m-%d %H:%M:%S")
+                ])
+            return json_data
