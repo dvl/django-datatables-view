@@ -92,8 +92,7 @@ class BaseDatatableView(JSONResponseView):
     def prepare_results(self, qs):
         data = []
         for item in qs:
-            data.append([self.render_column(item, column) for column in
-                self.get_columns()])
+            data.append([self.render_column(item, column) for column in self.get_columns()])
         return data
 
     def get_context_data(self, *args, **kwargs):

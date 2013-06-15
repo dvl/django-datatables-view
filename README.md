@@ -22,6 +22,11 @@ Usage
   * order_columns - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
   * filter_queryset - if you want to filter your datatable then override this method
 
+  For more advanced customisation you might want to override:
+
+  * get_initial_queryset - method that should return queryset used to populate datatable
+  * prepare_results - this method should return list of lists (rows with columns) as needed by datatables
+
   See example below:
 
     :::python
@@ -97,3 +102,54 @@ Usage
           });
           // ...
       });
+
+
+Another customisation example:
+
+  :::python
+
+        from django_datatables_view.base_datatable_view import BaseDatatableView
+
+        class OrderListJson(BaseDatatableView):
+            order_columns = ['number', 'user', 'state']
+
+            def get_initial_queryset(self):
+                # return queryset used as base for futher sorting/filtering
+                # these are simply objects displayed in datatable
+                # You should not filter data returned here by any filter values entered by user. This is because
+                # we need some base queryset to count total number of records.
+                return MyModel.objects.filter(something=self.kwargs['something'])
+
+            def filter_queryset(self, qs):
+                # use request parameters to filter queryset
+
+                # simple example:
+                sSearch = self.request.POST.get('sSearch', None)
+                if sSearch:
+                    qs = qs.filter(name__istartswith=sSearch)
+
+                # more advanced example
+                filter_customer = self.request.POST.get('customer', None)
+
+                if filter_customer:
+                    customer_parts = filter_customer.split(' ')
+                    qs_params = None
+                    for part in customer_parts:
+                        q = Q(customer_firstname__istartswith=part)|Q(customer_lastname__istartswith=part)
+                        qs_params = qs_params | q if qs_params else q
+                    qs = qs.filter(qs_params)
+                return qs
+
+            def prepare_results(self, qs):
+                # prepare list with output column data
+                # queryset is already paginated here
+                json_data = []
+                for item in qs:
+                    json_data.append([
+                        item.number,
+                        "%s %s" % (item.customer_firstname, item.customer_lastname),
+                        item.get_state_display(),
+                        item.created.strftime("%Y-%m-%d %H:%M:%S"),
+                        item.modified.strftime("%Y-%m-%d %H:%M:%S")
+                    ])
+                return json_data
