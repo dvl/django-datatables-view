@@ -1,6 +1,7 @@
+import json
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
-from django.utils import simplejson
 from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 from django.utils.translation import ugettext as _
@@ -68,8 +69,8 @@ class JSONResponseMixin(object):
             response = {'result': 'error',
                         'text': msg}
 
-        json = simplejson.dumps(response, cls=LazyEncoder)
-        return self.render_to_response(json)
+        dump = json.dumps(response, cls=LazyEncoder)
+        return self.render_to_response(dump)
 
 
 class JSONResponseView(JSONResponseMixin, TemplateView):
