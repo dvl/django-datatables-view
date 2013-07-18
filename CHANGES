@@ -1,3 +1,7 @@
+2013.07.18 - 1.6
+
+- compatibility with django 1.5 (thanks restless_being for patch and ema93sh for review)
+
 2013.06.15 - 1.5
 
 - added some 'batteries included' to django_datatables_view, use DjangoJSONEncoder (thanks Ewoud Kohl van Wijngaarden)
