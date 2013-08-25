@@ -1,10 +1,14 @@
-What is it?
-===========
+About
+=====
 
 django-datatables-view is a base view for handling server side processing for the awesome datatables (http://datatables.net).
 
 django-datatables-view simplifies handling of sorting, filtering and creating JSON output, as defined at: http://datatables.net/usage/server-side
 
+Example
+=======
+
+Example project that uses django-datatables-view is available at: https://bitbucket.org/pigletto/django-datatables-view-example/
 
 Usage
 =====
