@@ -30,7 +30,16 @@ class BaseDatatableView(JSONResponseView):
             # It's a choice field
             text = getattr(row, 'get_%s_display' % column)()
         else:
-            text = getattr(row, column)
+            try:
+                text = getattr(row, column)
+            except AttributeError:
+                obj = row
+                for part in column.split('.'):
+                    if obj is None:
+                        break
+                    obj = getattr(obj, part)
+
+                text = obj
 
         if hasattr(row, 'get_absolute_url'):
             return '<a href="%s">%s</a>' % (row.get_absolute_url(), text)
