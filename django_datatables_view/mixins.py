@@ -67,6 +67,7 @@ class JSONResponseMixin(object):
             else:
                 msg = _('Internal error') + ': ' + str(e)
             response = {'result': 'error',
+                        'sError': msg,
                         'text': msg}
 
         dump = json.dumps(response, cls=LazyEncoder)
