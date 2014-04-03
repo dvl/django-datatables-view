@@ -2,7 +2,7 @@
 from .mixins import JSONResponseView
 
 
-class BaseDatatableView(JSONResponseView):
+class DatatableMixin(object):
     """ JSON data for datatables
     """
     model = None
@@ -131,3 +131,7 @@ class BaseDatatableView(JSONResponseView):
                }
 
         return ret
+
+
+class BaseDatatableView(DatatableMixin, JSONResponseView):
+    pass

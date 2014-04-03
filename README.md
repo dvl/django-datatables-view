@@ -19,7 +19,8 @@ Usage
 
 ### 2. Edit views.py ###
 
-_django_datatables_view_ uses **GenericViews**, so your view should just inherit from base class: **BaseDatatableView**, and override few things.
+_django_datatables_view_ uses **GenericViews**, so your view should just inherit from base class: **BaseDatatableView**, and override few things
+(there is also a DatatableMixin - pure datatables handler that can be used with the mixins of your choice)
   These are:
 
   * **model** - the model that should be used to populate the datatable

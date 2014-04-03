@@ -1,3 +1,8 @@
+2014.04.03 - 1.8
+
+ - use force_text for django 1.5 and python3
+ - separate DatatableMixin mixin from BaseDatatableView
+
 2013.11.20 - 1.7
 
  - enables the column list to contain values such as "foreignkey.value".
