@@ -9,6 +9,7 @@ class DatatableMixin(object):
     columns = []
     order_columns = []
     max_display_length = 100  # max limit of records returned, do not allow to kill our server by huge sets of data
+    link_columns = []
 
     def initialize(*args, **kwargs):
         pass
@@ -41,7 +42,7 @@ class DatatableMixin(object):
 
                 text = obj
 
-        if hasattr(row, 'get_absolute_url'):
+        if hasattr(row, 'get_absolute_url') and column in self.link_columns:
             return '<a href="%s">%s</a>' % (row.get_absolute_url(), text)
         else:
             return text
