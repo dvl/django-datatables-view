@@ -27,7 +27,7 @@ _django_datatables_view_ uses **GenericViews**, so your view should just inherit
   * **columns** - the columns that are going to be displayed
   * **order_columns** - list of column names used for sorting (eg. if user sorts by second column then second column name from this list will be used in order by).
   * **filter_queryset** - if you want to filter your datatable then override this method
-  * **linked_columns** - defines which columns should be linked using model get_absolut_url() method.
+  * **link_columns** - defines which columns should be linked using model get_absolut_url() method.
 
   For more advanced customisation you might want to override:
 
